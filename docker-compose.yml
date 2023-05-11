@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: ./Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+  db:
+    image: postgres
+    restart: always
+    environment:
+     POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"

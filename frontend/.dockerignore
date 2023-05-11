@@ -1,0 +1,9 @@
+# Arquivos e diretórios específicos a serem ignorados
+node_modules
+.next
+out
+.env
+
+# Ignorar todos os arquivos na raiz, exceto os necessários
+/*
+!package.json

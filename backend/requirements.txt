@@ -1,0 +1,12 @@
+fastapi[all]
+uvicorn
+sqlalchemy
+psycopg2
+flask
+python-jose[cryptography]
+fastapi_users
+fastapi.security
+datetime
+jose
+passlib
+bcrypt

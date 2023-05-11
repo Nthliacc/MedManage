@@ -1,0 +1,6 @@
+# Arquivos gerados automaticamente
+__pycache__/
+*.pyc
+
+# Dependências
+venv/

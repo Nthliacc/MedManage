@@ -6,7 +6,7 @@ import {
   Input,
   ButtonContainer,
   Button
-} from '@/styles/Wizard';
+} from '@/styles/components/Wizard';
 import { NumericFormat } from 'react-number-format';
 
 interface stepOneProps {

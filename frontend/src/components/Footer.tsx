@@ -1,6 +1,6 @@
-import { FooterContainer } from '../styles/Footer';
+import { FooterContainer } from '../styles/components/Footer';
 
-export default function Footer() {
+const Footer = () => {
   return (
     <FooterContainer>
       <p>
@@ -10,3 +10,5 @@ export default function Footer() {
     </FooterContainer>
   );
 }
+
+export default Footer;

@@ -4,7 +4,7 @@ import StepOne from './stepOne';
 import StepTwo from './stepTwo';
 import StepThree from './stepThree';
 import { useRouter } from 'next/router';
-import { SubTitle, WizardContainer } from '@/styles/Wizard';
+import { SubTitle, WizardContainer } from '@/styles/components/Wizard';
 import { useMedication } from '@/services/medication';
 
 const Wizard: React.FC = () => {

@@ -1,26 +1,31 @@
-import { CardContainer, Price, Tools } from '@/styles/Home';
+import { CardContainer, Price, Tools, ImageMed, Overlay } from '@/styles/components/Card';
 import ButtonIcon from './ButtonIcon';
 import formatValue from '@/utils/formatValue';
+import formatDate from '@/utils/formatDate';
 
-const Card = (item: MedicationCreate) => {
+type Props = {
+  item: Medication;
+}
+
+const Card = ({item}: Props) => {
+  console.log(!item.image)
   return (
     <CardContainer key={item.id}>
-      <img
+      <ImageMed
+        imageURL={item.image ? item.image : '/default-image.png'}
+        isVoid={!item.image}
         className="imgMed"
-        src={item.image}
-        alt="Imagem do medicamento"
+        // src={item.image ? item.image : '/default-image.png'}
+        // alt="Imagem do medicamento"
         title="Imagem do medicamento"
-        onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-          e.currentTarget.src = 'default-image.png';
-        }}
       />
-      <Price className="price">{formatValue(item.price)}</Price>
-      <div className="overlay">
+      <Price className="price">{item.price ? formatValue(item.price) : "Valor não cadastrado"}</Price>
+      <Overlay>
         <h2>{item.name}</h2>
-        <p>{item.expiration_date}</p>
+        <p>Expira em: {formatDate(item.expiration_date)}</p>
         <Tools className="tools">
           <ButtonIcon
-            icone="edit.png"
+            icone="/edit.png"
             title="Editar"
             size="18"
             onClick={() => console.log('Editar')}
@@ -28,7 +33,7 @@ const Card = (item: MedicationCreate) => {
             Editar
           </ButtonIcon>
           <ButtonIcon
-            icone="delete.png"
+            icone="/delete.png"
             title="Excluir"
             size="20"
             onClick={() => console.log('Excluir')}
@@ -36,7 +41,7 @@ const Card = (item: MedicationCreate) => {
             Excluir
           </ButtonIcon>
         </Tools>
-      </div>
+      </Overlay>
     </CardContainer>
   );
 };

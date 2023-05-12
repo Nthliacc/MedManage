@@ -7,7 +7,7 @@ import {
   Section,
   Title,
   Value
-} from '@/styles/Wizard';
+} from '@/styles/components/Wizard';
 import formatDate from '@/utils/formatDate';
 import formatValue from '@/utils/formatValue';
 import React from 'react';

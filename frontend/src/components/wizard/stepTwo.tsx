@@ -6,7 +6,7 @@ import {
   Button,
   FormContainer,
   ImagePreview
-} from '@/styles/Wizard';
+} from '@/styles/components/Wizard';
 
 type StepTwoProps = {
   onBack: () => void;

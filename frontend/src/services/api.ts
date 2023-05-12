@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const baseURL = process.env.API_BASE_URL;
+export const baseURL = 'http://localhost:8000';
 
 export const api = axios.create({
   baseURL
@@ -9,6 +9,7 @@ export const api = axios.create({
 export const get = async (url: string, config?: any) => {
   try {
     const response = await api.get(url, config);
+    console.log(response)
     return response.data;
   } catch (err) {
     console.log(err);
@@ -19,8 +20,7 @@ export const get = async (url: string, config?: any) => {
 export const post = async (url: string, data?: any, config?: any) => {
   try {
     const response = await api.post(url, data, config);
-    // console.log(response);
-    return response.data;
+    return response;
   } catch (err) {
     console.log(err);
     return null;

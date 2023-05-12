@@ -1,68 +1,91 @@
 import { useRouter } from 'next/router';
 import { createContext, useContext, useState } from 'react';
 import { post } from './api';
+import jwt_decode from 'jwt-decode';
+import { setItem, getItem } from '@/utils/localStorage';
 
-type User = {
-  id: number;
-  username: string;
-  email: string;
-};
 
 type AuthContextType = {
-  user: User | null;
+  user: string | null;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, name: string) => Promise<void>;
   logout: () => void;
+  tokenExpired: () => boolean;
+  error?: boolean;
 };
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   login: async (email: string, password: string) => {},
   register: async (email: string, password: string, name: string) => {},
-  logout: () => {}
+  logout: () => {},
+  tokenExpired: () => false,
+  error: false
 });
 
 export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<string | null>(null);
+  const [error, setError] = useState<boolean>(false);
   const router = useRouter();
 
   const login = async (email: string, password: string) => {
     const response = await post('/login', { username: email, password });
-    console.log(response);
-    // if (response.ok) {
-    //   const user = await response.json();
 
-    //   setUser(user);
-    // } else {
-    //   throw new Error('Login failed.');
-    // }
+    if (response?.status === 200) {
+      const { access_token } = await response.data;
+      setItem('token', access_token);
+
+      const user: DecodedToken = jwt_decode(access_token);
+      setUser(user.sub);
+
+      router.push('/dashboard');
+    } else {
+      setError(true);
+    }
+  };
+
+  const tokenExpired = () => {
+    const token: string | null = getItem('token');
+    if (token) {
+      try {
+        const user: DecodedToken = jwt_decode(token);
+        if (user.exp < Date.now() / 1000) {
+          return true;
+        }
+      } catch (error) {
+        console.error(`Error decoding token: ${error}`);
+      }
+    } else {
+      console.error('Token not found in localStorage.');
+    }
+    return false;
   };
 
   const register = async (email: string, password: string, name: string) => {
     const response = await post('/register', { email, password, name });
 
-    if (response.ok) {
-      const user = await response.json();
+    if (response?.status === 200) {
+      const user = await response.data;
       setUser(user);
       router.push('/dashboard');
     } else {
-      throw new Error('Register failed.');
+      setError(true);
     }
   };
 
   const logout = () => {
     setUser(null);
-    // limpar localStorage
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    // redirecionar para a página de login
+    removeItem('token');
+
     router.push('/login');
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ user, login, register, logout, error, tokenExpired }}
+    >
       {children}
     </AuthContext.Provider>
   );

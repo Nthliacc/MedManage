@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Footer from './Footer';
-import { Main } from '@/styles/Layout';
+import { Main } from '@/styles/components/Layout';
 import { Fragment } from 'react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {

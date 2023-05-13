@@ -4,7 +4,6 @@ const GlobalStyles = createGlobalStyle`
   /* Estilos globais aqui */
   :root {
     --border-radius: 0.5rem;
-    --font-sans: 'Roboto' , sans-serif;
     --white-color: #FFFFFF;
     --light-color: #F2F2F2;
     --light-blue: #25B8D9;
@@ -22,12 +21,24 @@ const GlobalStyles = createGlobalStyle`
   html,
   body {
     max-width: 100vw;
+    font-family: 'Roboto', sans-serif;
     /* overflow-x: hidden; */
   }
 
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    border-radius: var(--border-radius);
+    transition: 0.5s;
+    &:hover {
+      transform: scale(1.1);
+      transition: 0.5s;
+    }
   }
 `;
 

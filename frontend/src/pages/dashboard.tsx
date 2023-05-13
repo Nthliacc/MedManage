@@ -9,7 +9,7 @@ const Dashboard = () => {
     <DashboardContainer>
       <NavBar />
       <ButtonContainer>
-        <ButtonCard onClick={() => router.push('medication/add')}>
+        <ButtonCard onClick={() => router.push('medication/new')}>
           <img
             src="add.png"
             alt="Adicionar medicamento"
@@ -17,7 +17,7 @@ const Dashboard = () => {
           />
         </ButtonCard>
 
-        <ButtonCard onClick={() => router.push('medication/list')}>
+        <ButtonCard onClick={() => router.push('medication')}>
           <img
             src="list.png"
             alt="Listar medicamentos"

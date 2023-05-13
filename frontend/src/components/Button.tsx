@@ -1,12 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-enum ButtonSize {
-  SMALL = 'small',
-  MEDIUM = 'medium',
-  LARGE = 'large'
-}
-
+type ButtonSize ='small' | 'medium' | 'large';
 type ButtonColor = 'primary' | 'secondary' | 'tertiary';
 
 interface ButtonProps {
@@ -15,6 +10,7 @@ interface ButtonProps {
   animate?: boolean;
   children: React.ReactNode;
   onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 const Button = ({ children, ...props }: ButtonProps) => {
@@ -44,8 +40,10 @@ const ButtonStyle = styled.button<ButtonProps>`
   padding: 1rem;
   font-size: 16px;
   cursor: pointer;
-  transition: 0.3s;
+  
+  transform: none !important;
   &:hover {
+    font-weight: bold;
     background-color: ${({ color }) => {
       switch (color) {
         case 'primary':
@@ -59,6 +57,25 @@ const ButtonStyle = styled.button<ButtonProps>`
       }
     }};
   }
+
+  &:disabled {
+    background-color: var(--light-color);
+    color: var(--deep-blue);
+    cursor: not-allowed;
+  }
+
+  ${({ size }) => {
+    switch (size) {
+      case 'small':
+        return 'width: 40px;';
+      case 'medium':
+        return 'width: 60px;';
+      case 'large':
+        return 'width: 100%;';
+      default:
+        return 'width: 60px;';
+    }
+  }}
 
   ${({ animate }) => {
     if (animate) {

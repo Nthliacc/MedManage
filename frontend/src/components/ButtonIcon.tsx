@@ -34,21 +34,15 @@ const Button = styled.button`
   justify-content: space-evenly;
   align-items: center;
   width: 60%;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
+
   &:hover {
-    transform: scale(1.1);
     background-color: var(--dark-blue) !important;
     color: var(--light-color);
-    transition: 0.5s;
     font-weight: bold;
-
-
   }
+  
   img {
     width: 1.5rem;
     height: 60%;
   }
-
 `;

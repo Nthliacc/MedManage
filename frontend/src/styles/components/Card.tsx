@@ -22,14 +22,28 @@ export const CardContainer = styled.div`
   font-family: var(--font-sans);
   font-size: 1.2rem;
   border-radius: 0.5rem;
-  transition: all 0.2s ease-in-out;
+  transition: 0.5s;
   width: 280px;
   max-height: 340px;
-  position: relative;
+  cursor: pointer;
+  .view {
+    opacity: 0;
+  }
+
   &:hover {
     transform: scale(1.05);
-    .tools > button {
+    transition: 0.5s;
+
+    .imgMed {
+      filter: grayscale(0%);
+    }
+    .tools > button , .view {
       opacity: 1;
+      :hover {
+        img {
+          filter: grayscale(100%);
+        }
+      }
     }
   }
 `;
@@ -40,36 +54,40 @@ export const Overlay = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
+  position: relative;
+
   h2 {
     font-size: 1.5rem;
+    border-bottom: 0.4px solid var(--medium-blue);
+    max-width: 66%;
   }
 
-  p {
+  .date {
     font-size: 0.8rem;
     color: var(--medium-blue);
   }
 `;
 
-export const ImageMed = styled.div<{isVoid: boolean, imageURL: string}>`
+export const ImageMed = styled.div<{ isVoid: boolean; imageURL: string }>`
   width: auto;
-  height: 300px;
-  background-image: url(${props => props.imageURL});
+  height: 280px;
+  background-image: url(${(props) => props.imageURL});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  max-height: 60%;
   border-radius: 0.5rem;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  opacity: ${props => props.isVoid ? 0.3 : 1};
+  opacity: ${(props) => (props.isVoid ? 0.3 : 1)};
+  filter: grayscale(100%);
 `;
 
 export const Price = styled.p`
   position: absolute;
-  top: 0px; /* Define a distância do preço em relação à borda inferior */
-  right: 0px; /* Define a distância do preço em relação à borda esquerda */
+  top: 0.5rem; /* Define a distância do preço em relação à borda inferior */
+  right: 1rem; /* Define a distância do preço em relação à borda esquerda */
   padding: 4px 8px; /* Adiciona um espaçamento interno ao redor do preço */
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   color: white;
   text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* Adiciona uma sombra ao texto para melhorar a visibilidade */

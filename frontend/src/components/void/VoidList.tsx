@@ -15,7 +15,7 @@ const VoidList = () => {
       <Button
         color="secondary"
         animate={true}
-        onClick={() => router.push('wizard')}
+        onClick={() => router.push('/medication/new')}
       >
         Adicionar
       </Button>

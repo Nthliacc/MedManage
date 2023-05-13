@@ -10,3 +10,4 @@ datetime
 jose
 passlib
 bcrypt
+PyJWT

@@ -75,3 +75,17 @@ class AccountUpdate(AccountBase):
     password: Optional[str] = None
     email: Optional[str] = None
     is_admin: Optional[bool] = None
+
+class UserLoginResponse(BaseModel):
+    id: int
+    username: str
+    email: str
+    is_admin: bool
+    access_token: str
+    token_type: str
+class UserLoginResponseObject(BaseModel):
+    user: UserLoginResponse
+    
+class Login(BaseModel):
+    username: str
+    password: str

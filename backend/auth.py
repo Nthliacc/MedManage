@@ -1,12 +1,13 @@
 from datetime import datetime, timedelta
 from jose import jwt
 from passlib.context import CryptContext
-from models import Account
+from models import *
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy import create_engine
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 import bcrypt
+from typing import Union
 
 app = FastAPI()
 
@@ -34,7 +35,9 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Função para gerar um token de acesso
-def create_access_token(data: dict, expires_delta: int = None):
+def create_access_token(data: Union[dict, UserLoginResponse], expires_delta: int = None):
+    if isinstance(data, UserLoginResponse):
+        data = data.dict()
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + timedelta(minutes=expires_delta)

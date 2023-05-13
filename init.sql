@@ -35,8 +35,8 @@ INSERT INTO Account (username, password, email, created_at, is_admin)
 VALUES ('admin', 'password123', 'admin@example.com', NOW(), TRUE);
 
 -- Create the collaborator user
-INSERT INTO Account (username, password, email, created_at) 
-VALUES ('collaborator', 'password456', 'collaborator@example.com', NOW());
+INSERT INTO Account (username, password, email, created_at, is_admin) 
+VALUES ('collaborator', 'password456', 'collaborator@example.com', NOW(), FALSE);
 
 -- Insert medication data
 INSERT INTO Medication (name, expiration_date, image, created_by, created_at, updated_by, updated_at) 

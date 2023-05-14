@@ -1,28 +1,23 @@
-# Dockerfile para o frontend
+# Define a imagem base
+FROM node:16-alpine
 
-# Use a imagem base apropriada para o aplicativo React
-FROM node:16
-
-#create app directory
-RUN mkdir -p /app
-
-# Define o diretório de trabalho dentro do contêiner
+# Define o diretório de trabalho
 WORKDIR /app
 
-# Copia o arquivo package.json e package-lock.json para o diretório de trabalho
-COPY package.json ./
+# Copia o package.json e o package-lock.json para o diretório de trabalho
+COPY package*.json ./
 
-# Instala as dependências do projeto
+# Instala as dependências
 RUN npm install
 
-# Copia todo o conteúdo da pasta frontend para o diretório de trabalho do contêiner
+# Copia todo o código para o diretório de trabalho
 COPY . .
 
-# Compila o aplicativo React
-RUN next build
+# Builda o projeto
+RUN npm run build
 
-# Expõe a porta em que o servidor web estará rodando
+# Define a porta exposta pelo container
 EXPOSE 3000
 
-# Define o comando a ser executado quando o contêiner for iniciado
+# Define o comando para iniciar o servidor
 CMD ["npm", "start"]

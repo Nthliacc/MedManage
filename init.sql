@@ -39,14 +39,14 @@ INSERT INTO Account (username, password, email, created_at)
 VALUES ('collaborator', 'password456', 'collaborator@example.com', NOW());
 
 -- Insert medication data
-INSERT INTO Medication (name, expiration_date, image, created_by, created_at, updated_by, updated_at) 
-VALUES ('Aspirina', '2023-06-30', NULL, 'user1', '2022-05-05', 'user2', '2022-05-05'),
-       ('Tylenol', '2024-01-31', NULL, 'user2', '2022-05-05', 'user3', '2022-05-05'),
-       ('Nimesulida', '2023-08-15', NULL, 'user3', NOW(), 'user4', NOW()),
-       ('Dipirona', '2024-03-01', NULL, 'user1', NOW(), 'user2', NOW()),
-       ('Omeprazol', '2023-10-31', NULL, 'user4', NOW(), 'user3', NOW()),
-       ('Rivotril', '2024-05-31', NULL, 'user1', NOW(), 'user2', NOW()),
-       ('Metformina', '2023-12-31', NULL, 'user3', NOW(), 'user4', NOW()),
-       ('Losartana', '2024-02-29', NULL, 'user2', NOW(), 'user3', NOW()),
-       ('Fluoxetina', '2023-09-30', NULL, 'user4', NOW(), 'user1', NOW()),
-       ('Clonazepam', '2024-04-30', NULL, 'user2', NOW(), 'user1', NOW());
+INSERT INTO Medication (name, price, expiration_date, image, created_by, created_at, updated_by, updated_at) 
+VALUES ('Aspirina', 16.64,'2023-06-30', NULL, 'user1', '2022-05-05', 'user2', '2022-05-05'),
+       ('Tylenol', 16.64,'2024-01-31', NULL, 'user2', '2022-05-05', 'user3', '2022-05-05'),
+       ('Nimesulida', 16.64,'2023-08-15', NULL, 'user3', NOW(), 'user4', NOW()),
+       ('Dipirona', 16.64,'2024-03-01', NULL, 'user1', NOW(), 'user2', NOW()),
+       ('Omeprazol', 16.64,'2023-10-31', NULL, 'user4', NOW(), 'user3', NOW()),
+       ('Rivotril', 16.64,'2024-05-31', NULL, 'user1', NOW(), 'user2', NOW()),
+       ('Metformina', 16.64,'2023-12-31', NULL, 'user3', NOW(), 'user4', NOW()),
+       ('Losartana', 16.64,'2024-02-29', NULL, 'user2', NOW(), 'user3', NOW()),
+       ('Fluoxetina', 16.64,'2023-09-30', NULL, 'user4', NOW(), 'user1', NOW()),
+       ('Clonazepam', 16.64,'2024-04-30', NULL, 'user2', NOW(), 'user1', NOW());

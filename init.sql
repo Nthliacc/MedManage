@@ -16,7 +16,7 @@ CREATE TABLE Medication (
     id SERIAL PRIMARY KEY,
     price DECIMAL(10,2),
     name VARCHAR(255) NOT NULL,
-    expiration_date DATE NOT NULL,
+    expiration_date VARCHAR(255),
     image BYTEA,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     created_by VARCHAR(255) NOT NULL,

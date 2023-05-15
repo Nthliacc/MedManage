@@ -13,11 +13,11 @@ class Medication(Base):
     __tablename__ = "medication"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    price = Column(Float(precision=2), nullable=False)
-    expiration_date = Column(DateTime, nullable=False)
+    price = Column(Float(precision=2))
+    expiration_date = Column(String)
     image = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    created_by = Column(String, nullable=False)
+    created_by = Column(String)
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     updated_by = Column(String)
     
@@ -30,15 +30,16 @@ class Medication(Base):
 class MedicationCreate(BaseModel):
     name: str
     price: float
-    expiration_date: datetime
+    expiration_date: Optional[str]
     image: Optional[str]
     created_by: str
+    description: Optional[str] = None
     
 
 class MedicationUpdate(BaseModel):
     name: Optional[str]
     price: Optional[float]
-    expiration_date: Optional[datetime]
+    expiration_date: Optional[str]
     image: Optional[str]
     updated_by: Optional[str]
     updated_at: Optional[datetime] = datetime.utcnow()
@@ -76,16 +77,16 @@ class AccountUpdate(AccountBase):
     email: Optional[str] = None
     is_admin: Optional[bool] = None
 
-class UserLoginResponse(BaseModel):
+class User(BaseModel):
     id: int
     username: str
     email: str
     is_admin: bool
     access_token: str
     token_type: str
+    create_by: str
 class UserLoginResponseObject(BaseModel):
-    user: UserLoginResponse
-    
+    user: User 
 class Login(BaseModel):
     username: str
     password: str

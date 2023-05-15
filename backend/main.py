@@ -1,10 +1,9 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from passlib.context import CryptContext
 from models import *
 from auth import *
+
 
 app = FastAPI()
 
@@ -15,8 +14,8 @@ app.add_middleware(
     allow_headers=['*'],
 )
 SECRET_KEY = "2c1375b5e96a3a9cb9d0d180f7b98dd92c75"
-
-from typing import List
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 @app.get("/medication")
 def get_medications(name: str = None, db: Session = Depends(get_db)):
@@ -29,12 +28,17 @@ def get_medications(name: str = None, db: Session = Depends(get_db)):
     return medications
 
 @app.post("/medication")
-def create_medication(medication: MedicationCreate, db: Session = Depends(get_db)):
-    db_medication = Medication(**medication.dict())
+def create_medication(medication: MedicationCreate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    user = authenticate_user(current_user.username, current_user.password, db)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    db_medication = Medication(name=medication.name, created_by=current_user.username)  # Definir o valor de created_by com o usuário atual
     db.add(db_medication)
     db.commit()
     db.refresh(db_medication)
     return db_medication
+
 
 @app.get("/medication/{medication_id}")
 def get_medication(medication_id: int, db: Session = Depends(get_db)):
@@ -111,5 +115,4 @@ def login(login_data: Login, db: Session = Depends(get_db)):
         data={"sub": user.username},
         expires_delta=ACCESS_TOKEN_EXPIRE_MINUTES
     )
-
     return {"access_token": access_token}

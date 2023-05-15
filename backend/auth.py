@@ -5,9 +5,12 @@ from models import *
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy import create_engine
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI
 import bcrypt
 from typing import Union
+from fastapi import Depends, HTTPException, FastAPI
+from fastapi.security import OAuth2PasswordBearer
+from models import Account
+from passlib.hash import bcrypt
 
 app = FastAPI()
 
@@ -18,8 +21,10 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 engine = create_engine('postgresql://postgres:000666@db/medication_database')
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, expire_on_commit=False)
+
 
 def get_db():
     db = SessionLocal()
@@ -35,8 +40,8 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Função para gerar um token de acesso
-def create_access_token(data: Union[dict, UserLoginResponse], expires_delta: int = None):
-    if isinstance(data, UserLoginResponse):
+def create_access_token(data: Union[dict, User], expires_delta: int = None):
+    if isinstance(data, User):
         data = data.dict()
     to_encode = data.copy()
     if expires_delta:
@@ -50,30 +55,22 @@ def create_access_token(data: Union[dict, UserLoginResponse], expires_delta: int
 # Função para autenticar o usuário
 def authenticate_user(username: str, password: str, db: Session):
     user = db.query(Account).filter(Account.username == username).first()
-    return user
+    if user and verify_password(password, user.password):
+        return user
+    return None
+# Função para converter a senha em texto simples para o formato bcryp
 
-# Função para verificar a senha
 def verify_password(plain_password, hashed_password):
+    return plain_password == hashed_password
+
+
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     try:
-        return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
-    except ValueError:
-        return False
-
-# Função para converter a senha em texto simples para o formato bcrypt
-def convert_password(plain_password):
-    salt = bcrypt.gensalt().decode("utf-8")
-    hashed_password = bcrypt.hashpw(plain_password.encode("utf-8"), salt.encode("utf-8"))
-    return hashed_password
-
-
-# Função para converter todas as senhas do banco de dados
-def convert_all_passwords(db):
-    # Obtenha todos os registros de usuário do banco de dados
-    users = db.query(Account).all()
-
-    # Percorra cada usuário e atualize a senha
-    for user in users:
-        user.password = convert_password(user.password)
-
-    # Commit as alterações no banco de dados
-    db.commit()
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        user = db.query(Account).filter(Account.username == username).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        return user
+    except jwt.JWTError:
+        raise HTTPException(status_code=401, detail="Invalid authentication credentials")

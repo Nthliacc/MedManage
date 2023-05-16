@@ -41,23 +41,23 @@ Senha: password123
 
 ### Tela de login
 
-![Tela de login](./screenshots/login.png)
+![Tela de login](./screenshots/login.PNG)
 
 ### Tela do dashboard
 
-![Tela do dashboard](./screenshots/dashboard.png)
+![Tela do dashboard](./screenshots/dashboard.PNG)
 
 ### Tela de cadastro de medicamentos
 
-![Tela de cadastro de medicamentos](./screenshots/cadastro-medicamento.png)
+![Tela de cadastro de medicamentos](./screenshots/cadastro-medicamento.PNG)
 
 ### Tela de lista de medicamentos
 
-![Tela de lista de medicamentos](./screenshots/lista-medicamentos.png)
+![Tela de lista de medicamentos](./screenshots/lista-medicamentos.PNG)
 
 ### Tela de detalhes de medicamentos
 
-![Tela de detalhes de medicamentos](./screenshots/detalhes_medicamentos.png)
+![Tela de detalhes de medicamentos](./screenshots/detalhes_medicamentos.PNG)
 
 ### Tela de cadastro de usuários
 

@@ -38,7 +38,7 @@ class MedicationCreate(BaseModel):
 
 class MedicationUpdate(BaseModel):
     name: Optional[str]
-    price: Optional[float]
+    price: Optional[str]
     expiration_date: Optional[str]
     image: Optional[str]
     updated_by: Optional[str]

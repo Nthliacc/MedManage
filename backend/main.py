@@ -3,19 +3,30 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from models import *
 from auth import *
+from dotenv import load_dotenv
 
-
+load_dotenv()
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "http://localhost:3001",
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],
-    allow_methods=['*'],
-    allow_headers=['*'],
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
-SECRET_KEY = "2c1375b5e96a3a9cb9d0d180f7b98dd92c75"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+import os
+
+SECRET_KEY = os.getenv("SECRET_KEY") 
+ALGORITHM = os.getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 @app.get("/medication")
 def get_medications(name: str = None, db: Session = Depends(get_db)):
@@ -72,9 +83,8 @@ def delete_medication(medication_id: int, db: Session = Depends(get_db)):
 
 @app.get("/accounts")
 async def get_accounts(db: Session = Depends(get_db)):
-    accounts = db.query(Account).all()
-    usernames = [account.username for account in accounts]
-    return usernames
+    accounts = db.query(Account.id, Account.username, Account.email).all()
+    return [{"id": account[0], "username": account[1], "email": account[2]} for account in accounts]
 
 @app.post("/accounts")
 async def create_account(account: AccountCreate, db: Session = Depends(get_db)):
@@ -112,7 +122,7 @@ def login(login_data: Login, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
 
     access_token = create_access_token(
-        data={"sub": user.username},
+        data={"username": user.username, "id": user.id, "isAdmin": user.is_admin},
         expires_delta=ACCESS_TOKEN_EXPIRE_MINUTES
     )
     return {"access_token": access_token}

@@ -3,15 +3,21 @@ import { GetServerSideProps } from "next";
 import VoidUsers from "@/components/void/VoidUsers";
 import UserList from "./list";
 import { Fragment } from "react";
+import Button from "@/components/Button";
+import { useRouter } from "next/router";
 
-const SettingPage = ({ users }: any) => {
-
+const UserPage = ({ users }: any) => {
+  const router = useRouter();
   const handleEdit = (user: User) => {
     post("/accounts", user);
   };
 
   const handleDelete = (user: User) => {
     del(`/accounts/${user.id}`);
+  };
+
+  const goHome = () => {
+    router.push("/");
   };
 
   return (
@@ -21,11 +27,12 @@ const SettingPage = ({ users }: any) => {
       ) : (
         <VoidUsers />
       )}
+      <Button color="secondary" onClick={goHome}>Voltar</Button>
     </Fragment>
   );
 };
 
-export default SettingPage;
+export default UserPage;
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const users = await get("/accounts");

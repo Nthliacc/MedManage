@@ -1,13 +1,11 @@
 import axios from 'axios';
 
-export const baseURL = 'http://localhost:8000';
-
 export const api = axios.create({
-  baseURL
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  withCredentials: true,
 });
 
 export const get = async (url: string, config?: any) => {
-  console.log(baseURL)
   try {
     const response = await api.get(url, config);
     return response.data;

@@ -2,11 +2,11 @@ import { useRouter } from 'next/router';
 import { createContext, useContext, useState } from 'react';
 import { post } from './api';
 import jwt_decode from 'jwt-decode';
-import { setItem, getItem } from '@/utils/localStorage';
+import { setItem, getItem, removeItem } from '@/utils/localStorage';
 
 
 type AuthContextType = {
-  user: string | null;
+  user: UserState | null;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, name: string) => Promise<void>;
   logout: () => void;
@@ -26,7 +26,7 @@ export const AuthContext = createContext<AuthContextType>({
 export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState<UserState | null>(null);
   const [error, setError] = useState<boolean>(false);
   const router = useRouter();
 
@@ -36,13 +36,15 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (response?.status === 200) {
       const { access_token } = await response.data;
       setItem('token', access_token);
-
+      console.log(access_token)
       const user: DecodedToken = jwt_decode(access_token);
-      setUser(user.sub);
+      setUser(user);
 
       router.push('/dashboard');
+    } else if(response?.status === 404) {
+      alert('Usuário ou senha inválidos');
     } else {
-      setError(true);
+      alert('Algum erro ocorreu, tente novamente mais tarde.');
     }
   };
 
@@ -51,7 +53,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (token) {
       try {
         const user: DecodedToken = jwt_decode(token);
-        if (user.exp < Date.now() / 1000) {
+        const expirationDate = new Date(user.exp * 1000);
+        const isExpired = expirationDate <= new Date();
+        if (isExpired) {
           return true;
         }
       } catch (error) {

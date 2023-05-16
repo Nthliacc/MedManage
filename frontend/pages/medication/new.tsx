@@ -17,9 +17,9 @@ const NewMedicationPage = ({ newMedication }: Props) => {
     formData.append('price', data.price.toString());
     formData.append('expiration_date', data.expiration_date);
     formData.append('image', data.image);
-    console.log("first", localStorage.getItem('token'))
+    
     await post('/medication', formData, {
-      headers: { 'Authorization': `${localStorage.getItem('token')}` }
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
       .then((response) => {
         const { id } = response?.data;

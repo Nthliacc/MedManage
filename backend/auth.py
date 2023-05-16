@@ -11,7 +11,9 @@ from fastapi import Depends, HTTPException, FastAPI
 from fastapi.security import OAuth2PasswordBearer
 from models import Account
 from passlib.hash import bcrypt
+from dotenv import load_dotenv
 
+load_dotenv()
 app = FastAPI()
 
 app.add_middleware(
@@ -25,6 +27,11 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 engine = create_engine('postgresql://postgres:000666@db/medication_database')
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, expire_on_commit=False)
 
+import os
+
+SECRET_KEY = os.getenv("SECRET_KEY") 
+ALGORITHM = os.getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 def get_db():
     db = SessionLocal()
@@ -32,10 +39,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
-SECRET_KEY = "2c1375b5e96a3a9cb9d0d180f7b98dd92c75"  # Substitua pelo seu segredo
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -67,7 +70,7 @@ def verify_password(plain_password, hashed_password):
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
+        username: str = payload.get("username")
         user = db.query(Account).filter(Account.username == username).first()
         if not user:
             raise HTTPException(status_code=404, detail="User not found")

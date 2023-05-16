@@ -14,7 +14,7 @@ export default function NavBar() {
   return (
     <NavBarContainer>
       <img src="/logo.png" width="80" onClick={handleHome} />
-      <h1>{`Olá, ${user ? user : 'visitante'}!`}</h1>
+      <h1>{`Olá, ${user ? user.username : 'visitante'}!`}</h1>
     </NavBarContainer>
   );
 }

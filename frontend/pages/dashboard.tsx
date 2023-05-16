@@ -5,10 +5,12 @@ import {
   ButtonContainer,
   ButtonCard
 } from '@/styles/Dashboard';
+import { useAuth } from '@/services/auth';
 
 const Dashboard = () => {
   const router = useRouter();
-  const isAdmin = true;
+  const { user } = useAuth();
+  const isAdmin = user?.isAdmin;
 
   return (
     <DashboardContainer>
@@ -39,8 +41,8 @@ const Dashboard = () => {
         </ButtonCard> */}
 
         {isAdmin && (
-          <ButtonCard onClick={() => router.push('/setting')}>
-            <img src="settings.png" alt="Configurações" title="Configurações" />
+          <ButtonCard onClick={() => router.push('/user')}>
+            <img src="user.png" alt="Usuários" title="Usuários" />
           </ButtonCard>
         )}
 

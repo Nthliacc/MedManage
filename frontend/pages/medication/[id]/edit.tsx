@@ -1,5 +1,6 @@
 import Wizard from "@/components/wizard";
 import { get, put } from "@/services/api";
+import { getItem } from "@/utils/localStorage";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -12,6 +13,7 @@ const EditMedicationPage = ({ medication }: Props) => {
   const [medicationState, setMedicationState] = useState<Props>({ medication });
   const router = useRouter();
   const { query } = router;
+  const token = getItem('token');
 
   useEffect(() => {
     async function getMedication() {
@@ -25,18 +27,19 @@ const EditMedicationPage = ({ medication }: Props) => {
   }, []);
 
   const onSucess = async (data: MedicationCreate) => {
-    const formData = new FormData();
+    const formData = {
+      name: data.name,
+      price: data.price,
+      expiration_date: data.expiration_date,
+    }
 
-    formData.append("name", data.name);
-    formData.append("price", Number(data.price));
-    formData.append("expiration_date", data.expiration_date);
-    formData.append("image", data.image);
-    console.log(query.id)
-    await put(`/medication/${query.id}`, formData, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }})
+    await put(`/medication/${query.id}`, formData, { 
+      headers: { 
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      }})
       .then((response) => {
-        const { id } = response?.data;
-
-        router.push(`/medication/${id}`);
+        router.push(`/medication/${query.id}`);
         return response;
       })
       .catch((error) => {

@@ -39,12 +39,19 @@ def get_medications(name: str = None, db: Session = Depends(get_db)):
     return medications
 
 @app.post("/medication")
-def create_medication(medication: MedicationCreate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+async def create_medication(medication: MedicationCreate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     user = authenticate_user(current_user.username, current_user.password, db)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
-    db_medication = Medication(name=medication.name, created_by=current_user.username)  # Definir o valor de created_by com o usuário atual
+    # image_data = await medication.image.read();
+
+    db_medication = Medication(
+        name=medication.name,
+        price=medication.price,
+        expiration_date=medication.expiration_date,
+        created_by=user.username
+    )
     db.add(db_medication)
     db.commit()
     db.refresh(db_medication)

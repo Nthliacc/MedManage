@@ -29,11 +29,11 @@ const viewPage = ({ medication }: Props) => {
     if (ok && isAdmin) {
       await del(`/medication/${medication.id}`);
       router.push("/medication");
-    } 
+    }
   };
 
   const handleEdit = () => {
-    if(isAdmin) router.push(`/medication/${medication.id}/edit`);
+    if (isAdmin) router.push(`/medication/${medication.id}/edit`);
   };
 
   return (
@@ -53,10 +53,12 @@ const viewPage = ({ medication }: Props) => {
                 Criado em:
                 {"\n" + formatDate(medication.created_at)}
               </p>
-              <p>
-                Atualizado em:
-                {"\n" + formatDate(medication.updated_at)}
-              </p>
+              {medication.updated_at && (
+                <p>
+                  Atualizado em:
+                  {"\n" + formatDate(medication.updated_at)}
+                </p>
+              )}
             </Fragment>
           )}
         </div>
@@ -94,7 +96,9 @@ const viewPage = ({ medication }: Props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  query,
+}) => {
   const { id } = query;
 
   const medication = await get(`medication/${id}`);

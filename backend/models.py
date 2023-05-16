@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional
 from sqlalchemy.sql import func
 from pydantic import BaseModel
-from sqlalchemy import Column, Float, Integer, String, DateTime, Boolean
+from sqlalchemy import Column, Float, Integer, String, DateTime, Boolean, LargeBinary
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 from sqlalchemy.orm import Session
@@ -15,7 +15,7 @@ class Medication(Base):
     name = Column(String, nullable=False)
     price = Column(Float(precision=2))
     expiration_date = Column(String)
-    image = Column(String)
+    image = Column(LargeBinary)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     created_by = Column(String)
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
@@ -32,8 +32,6 @@ class MedicationCreate(BaseModel):
     price: float
     expiration_date: Optional[str]
     image: Optional[str]
-    created_by: str
-    description: Optional[str] = None
     
 
 class MedicationUpdate(BaseModel):

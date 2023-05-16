@@ -1,5 +1,6 @@
 import Wizard from "@/components/wizard";
 import { post } from "@/services/api";
+import { getItem } from "@/utils/localStorage";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
@@ -9,17 +10,19 @@ interface Props {
 
 const NewMedicationPage = ({ newMedication }: Props) => {
   const router = useRouter();
+  const token = getItem('token');
 
   const onSucess = async (data: MedicationCreate) => {
-    const formData = new FormData();
-    
-    formData.append('name', data.name);
-    formData.append('price', data.price.toString());
-    formData.append('expiration_date', data.expiration_date);
-    formData.append('image', data.image);
-    
+    const formData = {
+      name: data.image,
+      price: data.price,
+      expiration_date: data.expiration_date,
+    }
+
     await post('/medication', formData, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      headers: { 
+        Authorization: `Bearer ${token}`,
+      }
     })
       .then((response) => {
         const { id } = response?.data;

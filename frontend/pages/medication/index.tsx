@@ -11,6 +11,7 @@ import { Suspense } from 'react';
 
 const ListPage = ({ data }: Props) => {
   const { list, isFilter } = data;
+  console.log(data);
   const medicationsList = list ? Object.values(list) : [];
 
   return (
@@ -38,7 +39,7 @@ export default ListPage;
 
 type Props = {
   data: {
-    list: MedicationCreate[];
+    list: Medication[];
     isFilter?: boolean;
   };
 };
@@ -46,12 +47,11 @@ type Props = {
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   query
 }) => {
-  try {
+  // try {
     const { name } = query;
-    const medications = await get('/medication').then((response) => {
-      return response;
-    });
-
+    const medications = await get('/medication');
+    
+    console.log('medications', medications)
     if (!name)
       return { props: { data: { list: medications, isFilter: false } } };
 
@@ -59,9 +59,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
       medication.name.toLowerCase().includes(name as string)
     );
 
-    return { props: { data: { list: filteredMedications, isFilter: true }, revalidate: 60 } };
-  } catch (error) {
-    console.log(error);
-    return { props: { data: { list: [], isFilter: false } } };
-  }
+    return { props: { data: { list: filteredMedications, isFilter: true }, revalidate: 0 } };
+  // } catch (error) {
+  //   console.log(error);
+  //   return { props: { data: { list: [], isFilter: false } } };
+  // }
 };

@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import ProgressBar from '../ProgressBar';
 import StepOne from './stepOne';
 import StepTwo from './stepTwo';
@@ -9,19 +9,23 @@ import {
   SubTitle,
   WizardContainer
 } from '@/styles/components/Wizard';
-import { get, post } from '@/services/api';
 import Button from '../Button';
-import { GetServerSideProps } from 'next';
 
 interface Props {
   medication: MedicationCreate | Medication;
+  onSubmit: (data: MedicationCreate) => void;
 }
 
-const Wizard = ({ medication }: Props) => {
+const Wizard = ({ medication, onSubmit } : Props) => {
   const router = useRouter();
   const [data, setData] = React.useState(medication);
   const [step, setStep] = useState(1);
-  console.log(medication);
+
+  useEffect(() => {
+    if (medication) {
+      setData(medication);
+    }
+  }, [medication]);
 
   const nextStep = () => {
     setStep(step + 1);
@@ -31,17 +35,8 @@ const Wizard = ({ medication }: Props) => {
     setStep(step - 1);
   };
 
-  const onSucess = async () => {
-    await post('/medication', data)
-      .then((response) => {
-        const { id } = response?.data;
-    
-        router.push(`/medication/${id}`);
-        return response;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const handleSubmit = () => {
+    step === 3 ? onSubmit(data) : nextStep();
   };
 
   return (
@@ -62,7 +57,7 @@ const Wizard = ({ medication }: Props) => {
           >
             {step === 1 ? 'Cancelar' : 'Voltar'}
           </Button>
-          <Button onClick={step === 3 ? onSucess : nextStep} color="tertiary">
+          <Button onClick={handleSubmit} color="tertiary">
             {step === 3 ? 'Salvar' : 'Próximo'}
           </Button>
         </ButtonContainer>
@@ -72,31 +67,3 @@ const Wizard = ({ medication }: Props) => {
 };
 
 export default Wizard;
-
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  query
-}) => {
-  if (query.id) {
-    const { id } = query;
-    console.log(1);
-    const medication = await get(`medication/${id}`);
-
-    return {
-      props: {
-        medication
-      }
-    };
-  } else {
-    console.log(2);
-    return {
-      props: {
-        medication: {
-          name: '',
-          price: 0,
-          expiration_date: '',
-          image: null
-        }
-      }
-    };
-  }
-};

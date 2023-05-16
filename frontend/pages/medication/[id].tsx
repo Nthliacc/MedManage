@@ -7,6 +7,7 @@ import Button from "@/components/Button";
 import formatValue from "@/utils/formatValue";
 import ButtonIcon from "@/components/ButtonIcon";
 import { Fragment } from "react";
+import { useAuth } from "@/services/auth";
 
 type Props = {
   medication: Medication;
@@ -14,8 +15,9 @@ type Props = {
 
 const viewPage = ({ medication }: Props) => {
   const router = useRouter();
+  const { user } = useAuth();
   const { image, name, price, expiration_date } = medication;
-  const isAdmin = true;
+  const isAdmin = user?.isAdmin;
 
   if (!medication) {
     return <div>Medicamento não encontrado</div>;
@@ -92,12 +94,9 @@ const viewPage = ({ medication }: Props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async (
-  context
-) => {
-  const { id } = context.query;
+export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) => {
+  const { id } = query;
 
-  // Fazer uma consulta no banco de dados para buscar as informações do medicamento com o ID fornecido
   const medication = await get(`medication/${id}`);
 
   return {

@@ -1,19 +1,18 @@
 interface MedicationCreate {
-  id?: string;
   name: string;
   price: number;
   expiration_date: string;
-  image: string | File;
+  image: string | Blob;
 }
 
 interface Medication {
-  id?: string;
+  id: string;
   name: string;
   price: number;
   expiration_date: string;
-  image: string;
-  created_at?: string;
-  created_by?: string;
-  updated_at?: string;
-  updated_by?: string;
+  image: string | null;
+  created_at: string;
+  created_by: string;
+  updated_at: string;
+  updated_by: string;
 }

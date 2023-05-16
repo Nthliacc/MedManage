@@ -30,9 +30,7 @@ const Card = ({ item }: Props) => {
         title="Imagem do medicamento"
       />
       <Overlay>
-        <Price className="price">
-          {item.price ? formatValue(item.price) : "R$ 0,00"}
-        </Price>
+        <Price className="price">{formatValue(item.price)}</Price>
         <h2>{item.name}</h2>
         <p className="date">Expira em: {formatDate(item.expiration_date)}</p>
         <Button

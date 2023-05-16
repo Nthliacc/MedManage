@@ -66,8 +66,8 @@ export const NumericFormatStyle = {
   fontSize: '16px',
   width: '100%',
 
-  ':-webkit-autofill': {
-    '-webkit-box-shadow': '0 0 0px 1000px var(--light-color) inset !important',
+  ':webkitAutofill': {
+    '-webkitBoxShadow': '0 0 0px 1000px var(--light-color) inset !important',
     caretColor: 'var(--light-color) !important',
     backgroundColor: 'var(--light-color) !important',
   }

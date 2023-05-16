@@ -2,7 +2,7 @@
  
 ## Descrição	
 
-Este projeto foi desenvolvido como parte do processo seletivo para a vaga de desenvolvedora na empresa [*Empresa anonima*](**). O desafio proposto foi desenvolver uma aplicação web para o cadastro de medicamentos. O usuário deveria ser capaz de cadastrar, editar e excluir medicamentos. O usuário também deveria ser capaz de visualizar uma lista com todos os medicamentos cadastrados.
+Este projeto foi desenvolvido como parte do processo seletivo para a vaga de desenvolvedora na empresa [*Empresa anônima*](**). O desafio proposto foi desenvolver uma aplicação web para o cadastro de medicamentos. O usuário deveria ser capaz de cadastrar, editar e excluir medicamentos. O usuário também deveria ser capaz de visualizar uma lista com todos os medicamentos cadastrados.
 
 ## Indice
 

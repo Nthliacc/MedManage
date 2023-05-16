@@ -1,6 +1,8 @@
+import Button from '@/components/Button';
 import useForm from '@/hooks/useForm';
 import { useAuth } from '@/services/auth';
 import { Input, Label } from '@/styles/Login';
+import { Container, FormRegister } from '@/styles/Register';
 
 type FormValues = {
   email: string;
@@ -15,6 +17,7 @@ const initialValues: FormValues = {
 };
 const RegisterPage = () => {
   const { register } = useAuth();
+
   const onSubmit = (values: FormValues) => {
     if (!values.email || !values.password || !values.username)
       return alert('Preencha todos os campos');
@@ -28,36 +31,38 @@ const RegisterPage = () => {
   });
 
   return (
-    <div>
+    <Container>
       <h1>Registrar</h1>
-      <form onSubmit={handleSubmit}>
-        <Label htmlFor="name">Nome</Label>
+      <FormRegister onSubmit={handleSubmit}>
+        <Label htmlFor="username">Nome</Label>
         <Input
           type="text"
-          id="name"
-          value={values.name}
+          id="username"
+          value={values.username}
+          required
           onChange={handleChange}
         />
         <Label htmlFor="email">Email</Label>
         <Input
           type="email"
           id="email"
+          required
           value={values.email}
           onChange={handleChange}
         />
         <Label htmlFor="password">Senha</Label>
         <Input
-          type="password"
           id="password"
+          required
           value={values.password}
           onChange={handleChange}
         />
-        <button type="submit">Registrar</button>
-      </form>
+        <Button type='submit' color="secondary">Registrar</Button>
+      </FormRegister>
       <p>
         Já possui uma conta? <a href="/login">Entre</a>
       </p>
-    </div>
+    </Container>
   );
 };
 

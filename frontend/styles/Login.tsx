@@ -22,8 +22,15 @@ export const FormLogin = styled.form`
   height: 70%;
   max-width: 400px;
   margin: 0.5rem;
-  position: relative;
   top: -6%;
+  
+  button {
+    margin-bottom: 0.8rem;
+    font-weight: bold;
+  }
+  button:last-child {
+    color: var(--deep-blue);
+  }
 `;
 
 export const Label = styled.label`
@@ -37,20 +44,42 @@ export const Input = styled.input`
   padding: 12px !important;
   border-radius: 5px;
   background-color: var(--light-color);
-  /* border: 1px solid gray; */
   font-size: 16px;
   width: 100%;
-
-  &::placeholder {
-    /* color: var(--medium-blue); */
-  }
+  /* #password {
+    position: relative;
+  } */
 `;
 
-export const Button = styled.button`
-  background-color: var(--deep-blue);
-  color: var(--light-color) !important;
-  padding: 0.8rem;
-  border-radius: 0.5rem;
-  margin: 0.5rem 0;
+export const Error = styled.p`
+  color: red;
+  font-size: 0.8rem;
+  margin-top: -0.5rem;
+  text-align: center;
   width: 100%;
+`;
+
+export const PasswordButton = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin: 0 8px !important;
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+`;
+export const InputPassword = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  background-color: var(--light-color);
+  border-radius: 5px;
+  padding: 0px !important;
+  width: 100%;
+  input {
+    margin: 0;
+  }
 `;

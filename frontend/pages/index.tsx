@@ -11,7 +11,7 @@ const Home = () => {
     if (tokenExpired()) {
       router.push('/login');
     }
-  }, []);
+  }, [router.asPath]);
 
   return <Dashboard />
 };
